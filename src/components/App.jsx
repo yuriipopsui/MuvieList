@@ -3,7 +3,6 @@ import muviesData from "../muviesData";
 import MuvieItem from "./MuvieItem";
 import "./bootstrap.min.css";
 
-console.log(muviesData);
 // Note!: UI = fn(state, props)
 
 class App extends React.Component {
@@ -24,29 +23,38 @@ class App extends React.Component {
         //this.state.muvies = updateMuvies;
         this.setState({
             muvies: updateMuvies
-        })
-    }
+        });
+    };
+
+    removeMuvieFromWillWath = muvie => {
+        console.log(typeof(this.removeMuvieFromWillWath));
+        const updateMuviesWillWatch=this.state.muviesWillWatch.filter(function(item){
+            return item.id !== muvie.id;
+        });
+        this.setState({
+            muviesWillWatch: updateMuviesWillWatch
+        });
+    };
 
     addMuvieToWillWatch = muvie => {
-        //return this.state.muviesWillWatch.push(muvie);
-        const updateMuviesWillWatch=[...this.state.muviesWillWatch];
-        updateMuviesWillWatch.push(muvie);
+        const updateMuviesWillWatch=[...this.state.muviesWillWatch, muvie];
         this.setState({
             muviesWillWatch: updateMuviesWillWatch
         });
     };
 
     render() {
-      console.log(this);
+      console.log("render", this.state, this.temp);
         return <div className="container">
                     <div className="row">
                         <div className="col-9">
                             <div className="row">
                                 {this.state.muvies.map(muvie =>{
-                                return <div className="col-6 md-4" key={muvie.id}>
+                                return <div className="col-6 mb-4" key={muvie.id}>
                                             <MuvieItem  muvie={muvie}
                                             removeMuvie={this.removeMuvie} 
-                                            addMuvieToWillWatch={this.addMuvieToWillWatch}/>
+                                            addMuvieToWillWatch={this.addMuvieToWillWatch}
+                                            removeMuvieFromWillWath={this.removeMuvieFromWillWath}/>
                                         </div>
                                  ;})}       
                             </div>
@@ -59,8 +67,5 @@ class App extends React.Component {
                 </div>
     }
 }
-//function App () {
-//    return <div>{muviesData[0].title}</div>;
-//}
 
 export default App;
