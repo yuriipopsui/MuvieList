@@ -5,7 +5,7 @@ class MuvieItem extends React.Component {
   constructor (){
   super();
   this.state = {
-    WillWatch: false
+    willWatch: false
    };
 }
    render () {
@@ -18,17 +18,20 @@ class MuvieItem extends React.Component {
                   <h6 className="card-title">{muvie.title}</h6>
                  <div className="d-flex justify-content-between align-items-center">
                      <p className="mb-0">Rating: {muvie.vote_average}</p>
-                     {this.state.WillWatch ? (
+                     {this.state.willWatch ? (
                          <button type="button" className="btn btn-success" 
-                         onClick={ () => {this.setState ({WillWatch: false});
-                         removeMuvieFromWillWatch.bind(null,muvie)}}>
+                         onClick={ () => {this.setState ({willWatch: false});
+                         console.log("remove movie");
+                         
+                         removeMuvieFromWillWatch(muvie)
+                         }}>
                          Remove Will Watch
                          </button>    
                      ) : (
                         <button type="button" className="btn btn-secondary" 
                         onClick={ ()=> {this.setState ({willWatch: true});
                         addMuvieToWillWatch(muvie)}}>
-                        Add Will Watch
+                        Will Watch
                         </button>      
                      )}
                      

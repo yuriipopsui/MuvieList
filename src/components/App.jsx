@@ -10,29 +10,31 @@ class App extends React.Component {
         super();
 
         this.state = {
-            muvies: muviesData,
+            muvies: [],
             muviesWillWatch: []
         };
+        console.log("constructor");
     }
 
+    componentDidMount() {
+        console.log("Didmount");
+        //new standard: fetch(`${API_URL}/discover/movie?api_key=${API_KEY}=...........)
+        fetch("https://api.themoviedb.org/3/discover/movie?api_key=3f4ca4f3a9750da53450646ced312397&sort_by=popularity.desc").then(
+            (response) => {console.log("then")
+            return response.json()
+        }).then((data)=> {
+        console.log("data", data)
+        this.setState({
+            muvies: data.results
+        })
+    })
+}
     removeMuvie = muvie => {
-        const updateMuvies=this.state.muvies.filter(function(item){
-            return item.id !== muvie.id;
-        });
+        const updateMuvies=this.state.muvies.filter(item =>item.id !== muvie.id);
         console.log(updateMuvies);
-        //this.state.muvies = updateMuvies;
+
         this.setState({
             muvies: updateMuvies
-        });
-    };
-
-    removeMuvieFromWillWath = muvie => {
-        console.log(typeof(this.removeMuvieFromWillWath));
-        const updateMuviesWillWatch=this.state.muviesWillWatch.filter(function(item){
-            return item.id !== muvie.id;
-        });
-        this.setState({
-            muviesWillWatch: updateMuviesWillWatch
         });
     };
 
@@ -42,11 +44,22 @@ class App extends React.Component {
             muviesWillWatch: updateMuviesWillWatch
         });
     };
+    
+    removeMuvieFromWillWatch = muvie => {
+        const updateMuviesWillWatch = this.state.muviesWillWatch.filter(
+            item => item.id !== muvie.id
+            );
+        this.setState({
+            muviesWillWatch: updateMuviesWillWatch
+        });
+    };
+
+    
 
     render() {
       console.log("render", this.state, this.temp);
         return <div className="container">
-                    <div className="row">
+                    <div className="row mt-4">
                         <div className="col-9">
                             <div className="row">
                                 {this.state.muvies.map(muvie =>{
@@ -54,7 +67,7 @@ class App extends React.Component {
                                             <MuvieItem  muvie={muvie}
                                             removeMuvie={this.removeMuvie} 
                                             addMuvieToWillWatch={this.addMuvieToWillWatch}
-                                            removeMuvieFromWillWath={this.removeMuvieFromWillWath}/>
+                                            removeMuvieFromWillWatch={this.removeMuvieFromWillWatch}/>
                                         </div>
                                  ;})}       
                             </div>
